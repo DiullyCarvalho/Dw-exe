@@ -21,7 +21,7 @@
         Senha: <br>
         <input type="password" name="senha"> <br>
 
-        <input type="submit" value="Cadastrar">
+        <input type="submit" value="Crar conta">
         <a href="index.php">Cancelar</a>
     </form>
 </body>
