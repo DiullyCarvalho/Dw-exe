@@ -1,18 +1,20 @@
 <?php
-//pegar as variáveis
+require_once "conexao.php";  
+
+$username = $_POST['username'];
 $nome = $_POST['nome'];
-$nascimento = $_POST['nascimento'];
-$formacao = $_POST['formacao'];
+$email = $_POST['email'];
+$senha = $_POST['senha'];
+
 
 //monta o SQL
 // INSERT INTO professor (nome, data_nascimento, formacao)
 // VALUES ('Teste', '2000-12-31', 'Mestre História');
-$sql = "INSERT INTO professor (nome, data_nascimento, formacao) VALUES ('$nome', '$nascimento', '$formacao')";
+$sql = "INSERT INTO usuario (username, nome, email, senha, foto) VALUES ('$username', '$nome', '$email', '$senha' 'foto.png')";
 
 //executa SQL
-require_once "../conexao.php";
+require_once "conexao.php";
 mysqli_query($conexao, $sql);
 
-
 //desvia a navegação
-header("Location: ../sucesso.html");
+header("Location: index.html");

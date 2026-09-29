@@ -8,7 +8,7 @@
 <body>
     <h3>Cadastro de Curso</h3>
 
-    <form action="sal_usuario.php" method="GET">
+    <form action="sal_usuario.php" method="post">
         Username: <br>
         <input type="text" name="username"> <br>
         
@@ -20,9 +20,6 @@
 
         Senha: <br>
         <input type="password" name="senha"> <br>
-
-        Foto: <br>
-        <input type="text" name="foto"> <br>
 
         <input type="submit" value="Cadastrar">
         <a href="index.php">Cancelar</a>

@@ -11,27 +11,7 @@
         <form action="sal_postagem.php" method="POST">
 
             Texto: <input  type="text" name="texto">
-            Usuário que postou:
-            <select name="idusuario">
-
-            <?php
-                require_once "conexao.php";
-
-                $sql = "SELECT * FROM usuario";
-
-                $resultados = mysqli_query($conexao, $sql);
-                while ($linha = mysqli_fetch_array($resultados)) {
-                    $idusuario = $linha['idusuario'];
-                    $nome = $linha['nome'];
-                    
-                    echo "<option value='$idusuario'>$nome</option>";
-                }
-            ?>
-        </select> 
-        <br> <br>
-
-            <input type="submit" value="Salvar">
-        </select>            
+            <input type="submit" name="Postar">           
         </form>
 </body>
 </html>
