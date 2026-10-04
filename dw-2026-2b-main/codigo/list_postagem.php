@@ -1,54 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        table, tr, td {
+        div {
             border-style: solid;
-            padding: 20px;
+        }
+
+        .postagens {
+            border-color: blue;
+            padding: 10px;
+        }
+
+        .postagem {
+            border-color: red;
+            padding: 10px;
+            margin: 10px;
         }
     </style>
 </head>
+
 <body>
-    <h2>Lista de cursos</h2>
+    <h2>Lista de postagem</h2>
 
-    <table>
-        <tr>
-            <td>id</td>
-            <td>nome</td>
-            <td>area</td>
-            <td>carga</td>
-            <td>ação</td>
-            <td>ação</td>
-        </tr>
+    <div class="postagens">
         <?php
-        require_once "../conexao.php";
-        
-        $sql = "SELECT * FROM curso";
-        
-        $resultados = mysqli_query($conexao, $sql);
-        
-        //quebra a variável $resultados em linhas (vetores/array)
-        while ($linha = mysqli_fetch_array($resultados)) {
-            $id = $linha['idcurso'];
-            $nome = $linha['nome'];
-            $area = $linha['area'];
-            $carga = $linha['carga_horaria'];
+        require_once "conexao.php";
 
-            echo "<tr>";
-                echo "<td>$id</td>";
-                echo "<td>$nome</td>";
-                echo "<td>$area</td>";
-                echo "<td>$carga</td>";
-                echo "<td><a href='excluir_curso.php?id=$id'>excluir</a></td>";
-                echo "<td><a href='excluir_curso.php?id=$id'><img src='../imagens/lixeira.png'></a></td>";
-            echo "</tr>";
+        $sql = "SELECT postagem.idpostagem, postagem.texto, postagem.data_hora, postagem.idusuario, usuario.username, usuario.nome, usuario.foto
+            FROM postagem, usuario
+            WHERE postagem.idusuario = usuario.idusuario;";
+
+        $postagens = mysqli_query($conexao, $sql);
+
+        while ($postagem = mysqli_fetch_array($postagens)) {
+            $idpostagem = $postagem['idpostagem'];
+            $texto = $postagem['texto'];
+            $data_hora = $postagem['data_hora'];
+            $idusuario = $postagem['idusuario'];
+            $nome_usuario = $postagem['nome'];
+            $username = $postagem['username'];
+            $foto_usuario = $postagem['foto'];
+
+            echo "<div class='postagem'>";
+            echo "<img src='fotos_usuario/$foto_usuario'>";
+            echo "$nome_usuario ($username)";
+            echo "<br>";
+            echo $idpostagem;
+            echo "<br>";
+            echo $texto;
+            echo "<br>";
+            echo $data_hora;
+
+            echo "<div>";
+            $sql2 = "SELECT comentario.idcomentario, comentario.idusuario, comentario.texto, usuario.username, usuario.nome, usuario.foto
+                FROM comentario, usuario
+                WHERE idpostagem = $idpostagem
+                AND comentario.idusuario = usuario.idusuario ORDER BY comentario.idcomentario;";
+            $comentarios = mysqli_query($conexao, $sql2);
+            $quantidade_comentario = mysqli_num_rows($comentarios);
+            if ($quantidade_comentario == 0) {
+                echo "Seja o primeiro a comentar...";
+            } else {
+                while ($comentario = mysqli_fetch_array($comentarios)) {
+                    $idcomentario = $comentario['idcomentario'];
+                    $comentario_idusuario = $comentario['idusuario'];
+                    $comentario_texto = $comentario['texto'];
+                    $comentario_nome_usuario = $comentario['nome'];
+                    $comentario_username_usuario = $comentario['username'];
+                    $comentario_foto_usuario = $comentario['foto'];
+
+                    echo "<br>";
+                    echo $idcomentario;
+                    echo "<img src='fotos_usuario/$comentario_foto_usuario'>";
+                    echo "$comentario_nome_usuario ($comentario_username_usuario)";
+                    echo $comentario_texto;
+                }
+            }
+        ?>
+            <br>
+            <input type="text">
+            <input type="submit" value="Comentar">
+        <?php
+            echo "</div>";
+
+            echo "</div>";
         }
-            
-            
-            ?>
-    </table>
+        ?>
+    </div>
 </body>
+
 </html>
